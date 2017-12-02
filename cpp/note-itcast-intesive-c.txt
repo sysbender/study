@@ -1,0 +1,92 @@
+
+2017-08-26
+
+1.  array to pointer
+	in c, array in parameter will be convert to pointer, so sizeof(arr)/sizeof(arr[0]) will not work.
+	this is an optimization, not copy all the element in array.
+
+2. memory
+	2.1 data type
+		simple - int, float/double, char, void
+		complex - array, structure, union, class
+		pointer
+	2.2 array vs pointer to array, 
+		
+		int b[10];
+		// b    the address of the first element
+		// &b   the address of the array
+		// b+1
+		// &b+1 
+	2.3 typedef
+		struct teacher {int age;} teacher
+		struct teacher t1 ; // must struct
+		typedef struct teacherType {int age;} teacherType
+		teacherType t2; // not need struct
+	2.4 void 
+		void // no type
+		void * // pointer to no type
+		void * memcpy(void *dest, void* src, size_t len);
+		
+		char * p2 = NULL;
+		p2 = (char*)malloc(100);   // cast rigth void pointer
+		
+	2.5 variable and memory	
+		variable is a name of contiguous memory 
+		variable is code, 
+		
+	2.6  four area memory in c :
+		heap, - manually managed by programmer
+		stack, - auto managed, for argument, local variable
+		global - constant , static
+		code
+		
+	2.7 return value
+		
+3. pointer
+	3.1 pointer is a data type
+	3.2 avoid wild pointer
+		init pointer when declare : char * p1 = NULL;
+		assign to null after free: free(p1); p1=NULL;
+	3.3 literal
+		not in stack or heap.
+		int i=10;
+	3.4 in and out parameter ;pointer and 4 area	
+		the caller function call pass head, stack, global to the called function.
+		the called function can only return heap and global(no stack) memory address pointer to the caller.
+		3.4.1 p - pointer
+			in : 
+				int showBuf(char * p);
+				int showArray(int *array , int num );
+			out:
+				int getlen(char * pFilename, int * pFileLen)
+				
+		3.4.2 pp - pointer to pointer
+		3.4.3 ppp - pointer to pointer to poiner
+	3.5 string
+		1. end with \0
+		2. str is char array
+		3. str can be on stack , heap, global
+	3.6 point vs array
+		array is constant pointer. can  not be l-value.
+	3.7 string as parameter
+4. const
+	const int a; int const b;  // same
+	const char *c;  // str is const
+	char * const d; = char buf[100]; // pointer is const
+	const char * const e;
+	
+		
+		
+	
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

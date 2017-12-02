@@ -1,0 +1,39 @@
+
+1. what is gis
+	1.1 
+	termnology 
+		* geographic
+		* spatial data 
+		scale
+		coordinate system/ spatial reference 
+			datum - origin , surface model 
+			GCS- geographic coordinate system 
+			projected coordinate system
+		cartography
+		temporal
+		hypothesis
+		infrared
+		electromagnetic spectrum
+		counter intuitive
+		
+
+		attribute tables
+		vector and feature
+				point, 
+				line, 
+				polygon
+		raster and imagery (multiband raster data)
+			attributes are per value(not pixel)
+		geoprocessing tools
+		geodatabases - 
+			file geodatabases
+			personal geodatabases
+			sqlite/spatialite geodatabases
+		shapefiles - ESRI format
+			3-7 files			
+		map documents
+		layers 
+		
+	arcgis
+	
+	
