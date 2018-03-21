@@ -43,4 +43,18 @@ private:
 	/********************************/
 	/*  User Variables              */
 	/********************************/
+
+	int x = 200;
+	int y = 200;
+
+	int vx = 0; //velocity
+	int vy = 0; 
+	int gb = 255;
+	bool shapeIsChanged = false;
+
+	bool inhibitUp = false;
+	bool inhibitDown = false;
+	bool inhibitLeft = false;
+	bool inhibitRight = false;
+
 };
