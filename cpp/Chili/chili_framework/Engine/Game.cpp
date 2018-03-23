@@ -21,6 +21,12 @@
 #include "MainWindow.h"
 #include "Game.h"
 
+
+template <typename T>
+inline T const& Between(T const& a, T const& b, T const& c) {
+	return a >= b && a <= c;
+}
+
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
@@ -42,6 +48,7 @@ void Game::UpdateModel()
 
 	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
 	{
+		x_mobile++;
 		if (inhibitRight) {
 
 		}
@@ -49,6 +56,7 @@ void Game::UpdateModel()
 			vx = vx + 1;
 			inhibitRight = true;
 		}
+
 
 	}
 	else 
@@ -59,6 +67,7 @@ void Game::UpdateModel()
 	// left
 	if (wnd.kbd.KeyIsPressed(VK_LEFT))
 	{
+		x_mobile--;
 		if (inhibitLeft) 
 		{
 
@@ -78,6 +87,7 @@ void Game::UpdateModel()
 	// down
 	if (wnd.kbd.KeyIsPressed(VK_DOWN))
 	{
+		y_mobile++;
 		if (inhibitDown) 
 		{
 
@@ -97,6 +107,7 @@ void Game::UpdateModel()
 	// up
 	if (wnd.kbd.KeyIsPressed(VK_UP))
 	{
+		y_mobile--;
 		if (inhibitUp)
 		{
 
@@ -114,8 +125,47 @@ void Game::UpdateModel()
 	}
 
 
+	//check colliding
+	colliding = ((Between(x_mobile - 5, x_fixed - 5, x_fixed + 5) 
+		|| Between(x_mobile + 5, x_fixed - 5, x_fixed + 5))
+		&&
+		(Between(y_mobile - 5, y_fixed - 5, y_fixed + 5) 
+			|| Between(y_mobile + 5, y_fixed - 5, y_fixed + 5)));
+	 
 	x = x + vx;
 	y = y + vy;
+
+	// check x, y
+	if(x + 6 >= gfx.ScreenWidth)
+	{
+		x = gfx.ScreenWidth - 6;
+		vx = 0;
+	}
+	if(x-6 <0)
+	{
+		x = 6;
+		vx = 0;
+	}
+
+	if (y + 6 >= gfx.ScreenHeight)
+	{
+		y = gfx.ScreenHeight - 6;
+		vy = 0;
+	}
+	if(y-6 <0)
+	{
+		y = 6;
+		vy = 0;
+	}
+
+	//
+	controlIsPressed = false;
+	if(x>200 && x<300)
+	{
+		controlIsPressed = true;
+	}
+
+
 	shapeIsChanged = wnd.kbd.KeyIsPressed(VK_SHIFT);
  
 
@@ -124,24 +174,64 @@ void Game::UpdateModel()
 
 }
 
+
+void Game::DrawBox(int x_center, int y_center, int r, int g, int b)
+{
+
+	gfx.PutPixel(-5 + x_center, -5 + y_center, r, g, b);
+	gfx.PutPixel(-5 + x_center, -4 + y_center, r, g, b);
+	gfx.PutPixel(-5 + x_center, -3 + y_center, r, g, b);
+	gfx.PutPixel(-4 + x_center, -5 + y_center, r, g, b);
+	gfx.PutPixel(-3 + x_center, -5 + y_center, r, g, b);
+	gfx.PutPixel(-5 + x_center,  5 + y_center, r, g, b);
+	gfx.PutPixel(-5 + x_center,  4 + y_center, r, g, b);
+	gfx.PutPixel(-5 + x_center,  3 + y_center, r, g, b);
+	gfx.PutPixel(-4 + x_center,  5 + y_center, r, g, b);
+	gfx.PutPixel(-3 + x_center,  5 + y_center, r, g, b);
+
+	gfx.PutPixel( 5 + x_center, -5 + y_center, r, g, b);
+	gfx.PutPixel( 5 + x_center, -4 + y_center, r, g, b);
+	gfx.PutPixel( 5 + x_center, -3 + y_center, r, g, b);
+	gfx.PutPixel( 4 + x_center, -5 + y_center, r, g, b);
+	gfx.PutPixel( 3 + x_center, -5 + y_center, r, g, b);
+	gfx.PutPixel( 5 + x_center,  5 + y_center, r, g, b);
+	gfx.PutPixel( 5 + x_center,  4 + y_center, r, g, b);
+	gfx.PutPixel( 5 + x_center,  3 + y_center, r, g, b);
+	gfx.PutPixel( 4 + x_center,  5 + y_center, r, g, b);
+	gfx.PutPixel( 3 + x_center,  5 + y_center, r, g, b);
+
+}
+ 
+
 void Game::ComposeFrame()
 {
 
-	
+	// draw box fix
+	DrawBox(x_fixed, y_fixed, 0, 255, 0);
 
+	// draw box 
+	if(colliding)
 	{
-
-		gfx.PutPixel(x - 2, y, 255, gb, gb);
-		gfx.PutPixel(x - 1, y, 255, gb, gb);
-
-		gfx.PutPixel(x, y - 2, 255, gb, gb);
-		gfx.PutPixel(x, y - 1, 255, gb, gb);
-		//gfx.PutPixel(x+2   , y, 255, 255, 255);
-		gfx.PutPixel(x, y+1, 255, gb, gb);
-		gfx.PutPixel(x, y+2, 255, gb, gb);
-
-		gfx.PutPixel(x + 1, y , 255, gb, gb);
-		gfx.PutPixel(x + 2, y , 255, gb, gb);
+		DrawBox(x_mobile, y_mobile, 255, 0, 0);
 	}
+	else
+	{
+		DrawBox(x_mobile, y_mobile, 255, 255, 255);
+	}
+
+	//{
+
+	//	gfx.PutPixel(x - 2, y, 255, gb, gb);
+	//	gfx.PutPixel(x - 1, y, 255, gb, gb);
+
+	//	gfx.PutPixel(x, y - 2, 255, gb, gb);
+	//	gfx.PutPixel(x, y - 1, 255, gb, gb);
+	//	//gfx.PutPixel(x+2   , y, 255, 255, 255);
+	//	gfx.PutPixel(x, y+1, 255, gb, gb);
+	//	gfx.PutPixel(x, y+2, 255, gb, gb);
+
+	//	gfx.PutPixel(x + 1, y , 255, gb, gb);
+	//	gfx.PutPixel(x + 2, y , 255, gb, gb);
+	//}
 
 }
