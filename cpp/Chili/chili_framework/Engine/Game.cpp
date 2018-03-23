@@ -126,11 +126,7 @@ void Game::UpdateModel()
 
 
 	//check colliding
-	colliding = ((Between(x_mobile - 5, x_fixed - 5, x_fixed + 5) 
-		|| Between(x_mobile + 5, x_fixed - 5, x_fixed + 5))
-		&&
-		(Between(y_mobile - 5, y_fixed - 5, y_fixed + 5) 
-			|| Between(y_mobile + 5, y_fixed - 5, y_fixed + 5)));
+	colliding = OverlapTest(x_fixed, y_fixed, x_mobile, y_mobile);
 	 
 	x = x + vx;
 	y = y + vy;
@@ -200,6 +196,15 @@ void Game::DrawBox(int x_center, int y_center, int r, int g, int b)
 	gfx.PutPixel( 4 + x_center,  5 + y_center, r, g, b);
 	gfx.PutPixel( 3 + x_center,  5 + y_center, r, g, b);
 
+}
+
+bool Game::OverlapTest(int xa, int ya, int xb, int yb)
+{
+	return xa - 5 <= xb + 5
+		&& xb - 5 <= xa + 5
+		&& ya - 5 <= yb + 5
+		&& yb - 5 <= ya + 5;
+	 
 }
  
 

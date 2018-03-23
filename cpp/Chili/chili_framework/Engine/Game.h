@@ -39,6 +39,7 @@ private:
 	/********************************/
 
 	void DrawBox(int x_center, int y_center, int r, int g, int b);
+	bool OverlapTest(int xa, int ya, int xb, int yb);
 private:
 	MainWindow& wnd;
 	Graphics gfx;
