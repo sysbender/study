@@ -135,20 +135,39 @@ int main(void)
 	// 1. vertex buffer  - in GPU ram
 	// 2. shader - code run on GPU, specify how the data will be drawn
 
-	float positions[6] = {
-		-0.5f, -0.5f,
-		0.0f, 0.5f,
-		0.5f, -0.5f };
+	float positions[] = {
+		-0.5f, -0.5f, //0
+		0.5f, -0.5f,   //1
+		0.5f, 0.5f ,  //2
+  		-0.5f, 0.5f,  //3 
+	};
+
+	unsigned int indices[] = {
+		0,1,2,
+		2,3,0
+	};
 
 	unsigned int buffer;
 	glGenBuffers(1, &buffer);  // anything generated in GPU get a id, vertex buffer/texture/shader
 	glBindBuffer(GL_ARRAY_BUFFER, buffer); // select 
 	// put data into buffer
-	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 6 * 2* sizeof(float), positions, GL_STATIC_DRAW);
 
 	// attribute - buffer layout
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);  // pointer = offset
 	glEnableVertexAttribArray(0);
+
+
+
+
+	//
+	unsigned int ibo;   // index buffer object
+	glGenBuffers(1, &ibo);  // anything generated in GPU get a id, vertex buffer/texture/shader
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER , ibo); // select 
+										   // put data into buffer
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 *  sizeof(unsigned int), indices, GL_STATIC_DRAW);
+
+
 
 	//-----------------------------get shader source
 	ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");  // vs debug set work dir = $(projectDir)
@@ -170,7 +189,7 @@ int main(void)
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 		// 
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES,6,  GL_UNSIGNED_INT, nullptr);
 
 		//--------------my test code legacy
 		//glBegin(GL_TRIANGLES);
