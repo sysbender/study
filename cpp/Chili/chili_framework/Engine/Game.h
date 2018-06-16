@@ -23,6 +23,10 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+#include "Poo.h"
+#include "Dude.h"
+#include <random>
+
 
 class Game
 {
@@ -38,8 +42,10 @@ private:
 	/*  User Functions              */
 	/********************************/
 
-	void DrawBox(int x_center, int y_center, int r, int g, int b);
-	bool OverlapTest(int xa, int ya, int xb, int yb);
+
+	int ClampScreenX(int x, int width);
+	int ClampScreenY(int y, int height);
+	
 private:
 	MainWindow& wnd;
 	Graphics gfx;
@@ -47,28 +53,21 @@ private:
 	/*  User Variables              */
 	/********************************/
 
-	int x = 200;
-	int y = 200;
-
-	int vx = 0; //velocity
-	int vy = 0; 
-	int gb = 255;
-	bool shapeIsChanged = false;
-	bool controlIsPressed = false;
-
-	bool inhibitUp = false;
-	bool inhibitDown = false;
-	bool inhibitLeft = false;
-	bool inhibitRight = false;
+	// init order =  declaration order
+	// random
 
 
-	//--------------
-	int x_fixed = 200;
-	int y_fixed = 200;
-	int x_mobile = 400;
-	int y_mobile = 400;
-	bool colliding = false;
-
+	std::random_device rd;
+	std::mt19937 rng;
+	std::uniform_int_distribution<int> x_Dist;
+	std::uniform_int_distribution<int> y_Dist;
+	//
+	Dude dude ;
+	Poo poo0  ;
+	Poo poo1  ;
+	Poo poo2  ;
+	static constexpr  int  mPooNum=1000;
+	Poo mPoo[mPooNum];
 
 
 };

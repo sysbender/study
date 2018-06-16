@@ -307,6 +307,29 @@ void Graphics::BeginFrame()
 	memset( pSysBuffer,0u,sizeof( Color ) * Graphics::ScreenHeight * Graphics::ScreenWidth );
 }
 
+void Graphics::DrawRect(int x1, int y1, int x2, int y2, Color c)
+{
+	int x_begin = std::min(x1, x2);
+	int x_end = std::max(x1, x2);
+	int y_begin = std::min(y1, y2);
+	int y_end = std::max(y1, y2);
+
+	int r = c.GetR();
+	int g = c.GetG();
+	int b = c.GetB();
+	for (int x = x_begin; x <= x_end; ++x)
+	{
+		for (int y = y_begin; y < y_end; ++y)
+		{
+			PutPixel(x, y, r, g, b);
+			PutPixel(x, y, r, g, b);
+		}	
+	}
+
+ 
+
+}
+
 void Graphics::PutPixel( int x,int y,Color c )
 {
 	assert( x >= 0 );

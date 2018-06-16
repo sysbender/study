@@ -20,18 +20,22 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include <random>
 
-
-template <typename T>
-inline T const& Between(T const& a, T const& b, T const& c) {
-	return a >= b && a <= c;
-}
-
-Game::Game( MainWindow& wnd )
+Game::Game(MainWindow& wnd)
 	:
-	wnd( wnd ),
-	gfx( wnd )
+	wnd(wnd),
+	gfx(wnd),
+	rng(rd()),
+	x_Dist(0, 770),
+	y_Dist(0, 570),
+	dude(400, 300)
 {
+
+	for(int i=0; i<mPooNum; ++i)
+	{
+		mPoo[i] = Poo(x_Dist(rng), y_Dist(rng));
+	}
 }
 
 void Game::Go()
@@ -44,199 +48,94 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	//const bool cond = wnd.kbd.KeyIsPressed(VK_UP);
+
+	// draw rect
+	gfx.DrawRect(100, 100, 200, 200, { 255, 255, 0 });
+
+	int step = 3;
+	int destX = dude.location().x;
+	int destY = dude.location().y;
+	// move
+	if(wnd.kbd.KeyIsPressed(VK_UP))
+	{
+		destY -=step;
+	}
+
+	if (wnd.kbd.KeyIsPressed(VK_DOWN))
+	{
+		destY +=step;
+	}
+
+	if (wnd.kbd.KeyIsPressed(VK_LEFT))
+	{
+		destX-=step;
+	}
 
 	if (wnd.kbd.KeyIsPressed(VK_RIGHT))
 	{
-		x_mobile++;
-		if (inhibitRight) {
-
-		}
-		else {
-			vx = vx + 1;
-			inhibitRight = true;
-		}
-
-
+		destX+=step;
 	}
-	else 
-	{
-		inhibitRight = false;
-	}
+	destX = ClampScreenX(destX, dude.rect().width);
+	destY = ClampScreenY(destY, dude.rect().height);
+	dude.move(Point(destX, destY));
 
-	// left
-	if (wnd.kbd.KeyIsPressed(VK_LEFT))
+
+	for(int i=0; i<mPooNum; ++i)
 	{
-		x_mobile--;
-		if (inhibitLeft) 
+		if (!mPoo[i].is_eaten() && dude.IsColliding(mPoo[i]))
 		{
-
+			mPoo[i].set_eaten(true);
 		}
-		else
-		{
-			vx = vx - 1;
-			inhibitLeft = true;
-		}
-		
 	}
-	else
-	{
-		inhibitLeft = false;
-	}
-
-	// down
-	if (wnd.kbd.KeyIsPressed(VK_DOWN))
-	{
-		y_mobile++;
-		if (inhibitDown) 
-		{
-
-		}
-		else
-		{
-			vy = vy + 1;
-			inhibitDown = true;
-		}
-
-	}
-	else
-	{
-		inhibitDown = false;
-	}
-
-	// up
-	if (wnd.kbd.KeyIsPressed(VK_UP))
-	{
-		y_mobile--;
-		if (inhibitUp)
-		{
-
-		}
-		else
-		{
-			vy = vy - 1;
-			inhibitUp = true;
-		}
-
-	}
-	else
-	{
-		inhibitUp = false;
-	}
-
-
-	//check colliding
-	colliding = OverlapTest(x_fixed, y_fixed, x_mobile, y_mobile);
-	 
-	x = x + vx;
-	y = y + vy;
-
-	// check x, y
-	if(x + 6 >= gfx.ScreenWidth)
-	{
-		x = gfx.ScreenWidth - 6;
-		vx = 0;
-	}
-	if(x-6 <0)
-	{
-		x = 6;
-		vx = 0;
-	}
-
-	if (y + 6 >= gfx.ScreenHeight)
-	{
-		y = gfx.ScreenHeight - 6;
-		vy = 0;
-	}
-	if(y-6 <0)
-	{
-		y = 6;
-		vy = 0;
-	}
-
-	//
-	controlIsPressed = false;
-	if(x>200 && x<300)
-	{
-		controlIsPressed = true;
-	}
-
-
-	shapeIsChanged = wnd.kbd.KeyIsPressed(VK_SHIFT);
- 
-
 
 	
-
 }
 
 
-void Game::DrawBox(int x_center, int y_center, int r, int g, int b)
+int Game::ClampScreenX(int x, int width)
 {
-
-	gfx.PutPixel(-5 + x_center, -5 + y_center, r, g, b);
-	gfx.PutPixel(-5 + x_center, -4 + y_center, r, g, b);
-	gfx.PutPixel(-5 + x_center, -3 + y_center, r, g, b);
-	gfx.PutPixel(-4 + x_center, -5 + y_center, r, g, b);
-	gfx.PutPixel(-3 + x_center, -5 + y_center, r, g, b);
-	gfx.PutPixel(-5 + x_center,  5 + y_center, r, g, b);
-	gfx.PutPixel(-5 + x_center,  4 + y_center, r, g, b);
-	gfx.PutPixel(-5 + x_center,  3 + y_center, r, g, b);
-	gfx.PutPixel(-4 + x_center,  5 + y_center, r, g, b);
-	gfx.PutPixel(-3 + x_center,  5 + y_center, r, g, b);
-
-	gfx.PutPixel( 5 + x_center, -5 + y_center, r, g, b);
-	gfx.PutPixel( 5 + x_center, -4 + y_center, r, g, b);
-	gfx.PutPixel( 5 + x_center, -3 + y_center, r, g, b);
-	gfx.PutPixel( 4 + x_center, -5 + y_center, r, g, b);
-	gfx.PutPixel( 3 + x_center, -5 + y_center, r, g, b);
-	gfx.PutPixel( 5 + x_center,  5 + y_center, r, g, b);
-	gfx.PutPixel( 5 + x_center,  4 + y_center, r, g, b);
-	gfx.PutPixel( 5 + x_center,  3 + y_center, r, g, b);
-	gfx.PutPixel( 4 + x_center,  5 + y_center, r, g, b);
-	gfx.PutPixel( 3 + x_center,  5 + y_center, r, g, b);
-
+	const int right = x + dude.rect().width;
+	if(x<0)
+	{
+		return 0;
+	}
+	else if(right >= gfx.ScreenWidth)
+	{
+		return gfx.ScreenWidth - 1 - width;
+	}
+	else
+	{
+		return x;
+	}
 }
 
-bool Game::OverlapTest(int xa, int ya, int xb, int yb)
+int Game::ClampScreenY(int y, int height)
 {
-	return xa - 5 <= xb + 5
-		&& xb - 5 <= xa + 5
-		&& ya - 5 <= yb + 5
-		&& yb - 5 <= ya + 5;
-	 
+	if(y<0)
+	{
+		return 0;
+	}
+	else if(y + height >= gfx.ScreenHeight)
+	{
+		return gfx.ScreenHeight - 1 - height;
+	}
+	else
+	{
+		return y;
+	}
 }
- 
 
 void Game::ComposeFrame()
 {
-
-	// draw box fix
-	DrawBox(x_fixed, y_fixed, 0, 255, 0);
-
-	// draw box 
-	if(colliding)
+	dude.Draw(gfx);
+	for (int i = 0; i<mPooNum; ++i)
 	{
-		DrawBox(x_mobile, y_mobile, 255, 0, 0);
-	}
-	else
-	{
-		DrawBox(x_mobile, y_mobile, 255, 255, 255);
+		if (!mPoo[i].is_eaten()  )
+		{
+			mPoo[i].RandomMove(Rect(gfx.ScreenWidth, gfx.ScreenHeight));
+			mPoo[i].Draw(gfx);
+		}
 	}
 
-	//{
-
-	//	gfx.PutPixel(x - 2, y, 255, gb, gb);
-	//	gfx.PutPixel(x - 1, y, 255, gb, gb);
-
-	//	gfx.PutPixel(x, y - 2, 255, gb, gb);
-	//	gfx.PutPixel(x, y - 1, 255, gb, gb);
-	//	//gfx.PutPixel(x+2   , y, 255, 255, 255);
-	//	gfx.PutPixel(x, y+1, 255, gb, gb);
-	//	gfx.PutPixel(x, y+2, 255, gb, gb);
-
-	//	gfx.PutPixel(x + 1, y , 255, gb, gb);
-	//	gfx.PutPixel(x + 2, y , 255, gb, gb);
-	//}
 
 }
