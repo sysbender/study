@@ -1,0 +1,50 @@
+﻿<Window x:Class="WpfBasics.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfBasics"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="400">
+
+    <Border Padding="10">
+        <StackPanel>
+            <!-- buttons -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Margin=" 0 0 10 0 " Grid.Column="0" Content="Apply"></Button>
+                <Button  Grid.Column="1" Content="Reset"></Button>
+                <Button Margin=" 10 0 0 0 "  Grid.Column="2" Content="Refresh"></Button>
+            </Grid>
+
+            <TextBlock Text="Pulse Properties" FontWeight="Bold" Margin="0 10"/>
+
+            <TextBlock Text="Description"/>
+            <TextBlock   IsEnabled="True" Padding="2" />
+            
+            <!-- status and revision-->
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                  <TextBlock Text="Status"/>
+                  <TextBlock/>
+                </StackPanel>
+              <StackPanel Grid.Column="1">
+                <TextBlock Text="Revision"/>
+                <TextBlock/>
+              </StackPanel>
+
+            </Grid>
+
+        </StackPanel>
+    </Border>
+</Window>
