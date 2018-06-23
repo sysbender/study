@@ -9,7 +9,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 
 	const glm::vec4 CornflowerBlue = glm::vec4(0.392f, 0.584f, 0.929f, 1.0f);
 
-	if (!glfwInit())
+	if (!glfwInit()) //glfw
 	{
 		return -1;
 	}
@@ -20,20 +20,23 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 		return -1;
 	}
 
-	glfwMakeContextCurrent(window);
+	glfwMakeContextCurrent(window);  //context
 
-	if (gl3wInit() != 0)
+	if (gl3wInit() != 0)   // loading library
 	{
 		return -1;
 	}
 
-	glViewport(0, 0, 800, 600);
+	glViewport(0, 0, 800, 600);  //where to render
 
-	while (!glfwWindowShouldClose(window))
-	{
-		glClearBufferfv(GL_COLOR, 0, &CornflowerBlue[0]);
+	while (!glfwWindowShouldClose(window))  // game loop or run loop
+	{    // float, vector = array of float point value
+		// 4 byte for each pixel of 800X600
+		glClearBufferfv(GL_COLOR, 0, &CornflowerBlue[0]);  // clear color buffer, give it a CornflowerBlue color
 
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(window);  // double buffering : front + back buffer
+		//vertical refresh/sync rate
+		// handle mouse and event
 		glfwPollEvents();
 	}
 
