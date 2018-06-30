@@ -1,5 +1,6 @@
 package renderEngine;
 
+// 3d model stored in memory
 public class RawModel {
 	
 	private int vaoID;

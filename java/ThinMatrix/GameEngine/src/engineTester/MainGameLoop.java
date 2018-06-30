@@ -18,7 +18,7 @@ public class MainGameLoop {
 		DisplayManager.createDisplay();
 		
 		
-		
+		// create loader and renderer
 		Loader loader = new Loader();
 		Renderer renderer = new Renderer();	
 		
