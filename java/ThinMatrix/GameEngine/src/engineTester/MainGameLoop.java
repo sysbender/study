@@ -2,12 +2,11 @@ package engineTester;
 
 import org.lwjgl.opengl.Display;
 
- 
-
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.RawModel;
 import renderEngine.Renderer;
+import shaders.StaticShader;
  
 
 public class MainGameLoop {
@@ -21,6 +20,11 @@ public class MainGameLoop {
 		// create loader and renderer
 		Loader loader = new Loader();
 		Renderer renderer = new Renderer();	
+		
+		
+		// shader
+		StaticShader shader = new StaticShader();
+		
 		
 		
 		//OpenGL expects vertices to be defined counter clockwise by default
@@ -44,16 +48,17 @@ public class MainGameLoop {
 			
 			renderer.prepare();
 			// game logic
-			
+			shader.start();
 			renderer.render(model);
+			shader.stop();
 			//render
 			
 			DisplayManager.updateDisplay();
 		}
 		
 
-
-		
+		shader.cleanUp();
+		loader.cleanUp();
 		DisplayManager.closeDisplay();
 		
 
