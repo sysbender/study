@@ -20,10 +20,10 @@ public class DisplayManager {
 	
 	public static void createDisplay() {
 		
-		ContextAttribs attribs = new ContextAttribs(3,2); //version 
+		ContextAttribs attribs = new ContextAttribs(3,2) //version 
 		
-		attribs.withForwardCompatible(true);
-		attribs.withProfileCore(true);
+		.withForwardCompatible(true)
+		.withProfileCore(true);
 		
 		try {
 			Display.setDisplayMode(new DisplayMode( WIDTH, HEIGHT));
