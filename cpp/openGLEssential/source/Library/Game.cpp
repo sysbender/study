@@ -74,7 +74,7 @@ namespace Library
 	{
 		return mServices;
 	}
-
+	// game loop
 	void Game::Run()
 	{
 		sInternalInstance = this;
@@ -104,7 +104,7 @@ namespace Library
 
 	void Game::Initialize()
 	{
-		for (auto& component : mComponents)
+		for (auto& component : mComponents)  // component is for extending 
 		{
 			component->Initialize();
 		}
@@ -149,7 +149,7 @@ namespace Library
 		{
 			throw GameException("glfwInit() failed.");
 		}
-
+		// if there is multiple monitor , then choose the primary monitor
 		GLFWmonitor* monitor = (mIsFullScreen ? glfwGetPrimaryMonitor() : nullptr);
 		mWindow = glfwCreateWindow(mScreenWidth, mScreenHeight, Utility::ToString(mWindowTitle).c_str(), monitor, nullptr);
 		if (mWindow == nullptr)
@@ -157,7 +157,7 @@ namespace Library
 			Shutdown();
 			throw GameException("glfwCreateWindow() failed.");
 		}
-
+		// put the windows inside the middle of the screen
 		POINT center = CenterWindow(mScreenWidth, mScreenHeight);
 		glfwSetWindowPos(mWindow, center.x, center.y);
 	}
@@ -170,7 +170,7 @@ namespace Library
 		{
 			throw GameException("gl3wInit() failed.");
 		}
-
+		// query the version of opengl from the driver 
 		glGetIntegerv(GL_MAJOR_VERSION, &mMajorVersion);
 		glGetIntegerv(GL_MINOR_VERSION, &mMinorVersion);
 
@@ -197,7 +197,7 @@ namespace Library
 	void Game::OnKey(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
 		UNREFERENCED_PARAMETER(window);
-
+		// keyboard handler is a map of function pointer
 		for (const auto& handler : sInternalInstance->mKeyboardHandlers)
 		{
 			handler.second(key, scancode, action, mods);

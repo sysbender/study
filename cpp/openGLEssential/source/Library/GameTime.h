@@ -23,7 +23,7 @@ namespace Library
 
 	private:
 		std::chrono::high_resolution_clock::time_point mCurrentTime;
-		std::chrono::milliseconds mTotalGameTime;
-		std::chrono::milliseconds mElapsedGameTime;
+		std::chrono::milliseconds mTotalGameTime;  // total time since the clock is reset
+		std::chrono::milliseconds mElapsedGameTime; // time between frames
 	};
 }

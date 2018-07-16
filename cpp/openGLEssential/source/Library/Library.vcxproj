@@ -182,6 +182,7 @@ xcopy /E /Y "$(ProjectDir)Content" "$(SolutionDir)..\content"</Command>
     <ClCompile Include="VectorHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="content\Effects\BasicEffect.frag" />
     <None Include="content\Effects\BasicEffect.vert" />
     <None Include="content\Effects\Skybox.frag" />

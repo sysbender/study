@@ -223,6 +223,7 @@
     <None Include="DrawableGameComponent.inl">
       <Filter>Misc</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="content\Models\Sphere.obj">
